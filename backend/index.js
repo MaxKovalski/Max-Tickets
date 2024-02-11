@@ -1,0 +1,35 @@
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import chalk from "chalk";
+import dotenv from "dotenv";
+import { authRouter } from "./routers/authRouter.js";
+const env = dotenv.config();
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log(chalk.green("Connected to MongoDB!"));
+  } catch (error) {
+    console.log(chalk.red("Error connecting to MongoDB: ", error.message));
+    process.exit();
+  }
+}
+connectDB().catch((err) => console.log(err));
+const app = express();
+app.use(express.json());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: "GET,PUT,POST,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type, Accept, Authorization",
+  })
+);
+app.listen(process.env.PORT, () => {
+  console.log(chalk.green(`Server is running on port ${process.env.PORT}`));
+});
+
+app.use(authRouter);
+app.use("/", (req, res) => {
+  res.send("Hello World!");
+});
