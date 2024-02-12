@@ -20,4 +20,45 @@ export const signUp = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-export const login = async (req, res) => {};
+export const login = async (req, res) => {
+  try {
+    const userDetails = req.body;
+    const findUser = await User.findOne({ email: userDetails.email });
+    if (!findUser) {
+      return res.status(404).json({ message: "Email or Password incorrect" });
+    }
+    const passwordCheck = await bcrypt.compare(
+      userDetails.password,
+      findUser.password
+    );
+    if (!passwordCheck) {
+      return res.status(401).json({ message: "Email or Password incorrect" });
+    }
+    const loggedUser = findUser.toObject();
+    delete loggedUser.password;
+    delete loggedUser.email;
+    const token = jwt.sign(
+      {
+        name: {
+          first: loggedUser.name.first,
+          last: loggedUser.name.last,
+        },
+        userId: loggedUser._id,
+        permission: loggedUser.permission,
+      },
+      secret,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({
+      message: "User logged in successfully",
+      user: {
+        id: loggedUser._id,
+        name: loggedUser.name,
+        permission: loggedUser.permission,
+      },
+      token: token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

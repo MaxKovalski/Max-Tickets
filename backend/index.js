@@ -3,6 +3,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import chalk from "chalk";
 import dotenv from "dotenv";
+import morgan from "morgan";
+import moment from "moment";
 import { authRouter } from "./routers/authRouter.js";
 const env = dotenv.config();
 async function connectDB() {
@@ -16,6 +18,9 @@ async function connectDB() {
 }
 connectDB().catch((err) => console.log(err));
 const app = express();
+morgan.token("time", () => moment().format("YYYY-MM-DD HH:mm:ss"));
+const morganFormat = ":time :method :url :status :response-time ms";
+app.use(morgan(morganFormat));
 app.use(express.json());
 app.use(
   cors({
