@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LoginForm from "./LoginForm";
-
+import "../Css/Login.css";
 export default function Login() {
   const [loginData, setLoginData] = useState({
     email: "",
@@ -27,8 +27,7 @@ export default function Login() {
     }
   };
   return (
-    <div>
-      <h3>login</h3>
+    <div className="container">
       <LoginForm handleSubmit={handleSubmit} />
     </div>
   );
