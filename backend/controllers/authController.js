@@ -2,10 +2,17 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.js";
 import jwt from "jsonwebtoken";
 import { secret } from "../config/jwtConfig.js";
-
+import { userValidation } from "../middleware/validationMiddleware.js";
 export const signUp = async (req, res) => {
   try {
     const userDetails = req.body;
+    const validate = userValidation.validate(userDetails, {
+      abortEarly: false,
+    });
+    if (validate.error) {
+      const error = validate.error.details[0].message;
+      return res.status(406).json({ error: error });
+    }
     const encryptPassword = await bcrypt.hash(userDetails.password, 10);
     userDetails.password = encryptPassword;
     const user = new User(userDetails);
@@ -17,7 +24,7 @@ export const signUp = async (req, res) => {
     if (error.code === 11000) {
       return res.status(409).json({ message: "Email already exists" });
     }
-    return res.status(500).json({ message: "Internal Server Error" });
+    // return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 export const login = async (req, res) => {

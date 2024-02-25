@@ -1,6 +1,6 @@
-import { Route, Routes } from "react-router-dom";
-import Login from "./pages/Login/Login";
-import SignUp from "./pages/Signup/SignUp";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./pages/Login/Login.jsx";
+import SignUp from "./pages/Signup/SignUp.jsx";
 export default function Router() {
   return (
     <Routes>

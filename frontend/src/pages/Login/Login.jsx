@@ -1,18 +1,12 @@
 import { useState } from "react";
 import LoginForm from "./LoginForm";
-import "../Css/Login.css";
 export default function Login() {
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     try {
       e.preventDefault();
       const formInputs = new FormData(e.target);
       const formProps = Object.fromEntries(formInputs);
-      setLoginData(formProps);
-      fetch(`http://localhost:2323/login`, {
+      await fetch(`http://localhost:2323/login`, {
         credentials: "include",
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -26,9 +20,5 @@ export default function Login() {
       console.log(error);
     }
   };
-  return (
-    <div className="container">
-      <LoginForm handleSubmit={handleSubmit} />
-    </div>
-  );
+  return <LoginForm handleSubmit={handleSubmit} />;
 }
