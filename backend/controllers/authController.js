@@ -2,11 +2,14 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.js";
 import jwt from "jsonwebtoken";
 import { secret } from "../config/jwtConfig.js";
-import { userValidation } from "../middleware/validationMiddleware.js";
+import {
+  signUpValidation,
+  loginValidation,
+} from "../middleware/validationMiddleware.js";
 export const signUp = async (req, res) => {
   try {
     const userDetails = req.body;
-    const validate = userValidation.validate(userDetails, {
+    const validate = signUpValidation.validate(userDetails, {
       abortEarly: false,
     });
     if (validate.error) {
@@ -24,12 +27,19 @@ export const signUp = async (req, res) => {
     if (error.code === 11000) {
       return res.status(409).json({ message: "Email already exists" });
     }
-    // return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 export const login = async (req, res) => {
   try {
     const userDetails = req.body;
+    const validate = loginValidation.validate(userDetails, {
+      abortEarly: false,
+    });
+    if (validate.error) {
+      const error = validate.error.details[0].message;
+      return res.status(406).json({ error: error });
+    }
     const findUser = await User.findOne({ email: userDetails.email });
     if (!findUser) {
       return res.status(404).json({ message: "Email or Password incorrect" });

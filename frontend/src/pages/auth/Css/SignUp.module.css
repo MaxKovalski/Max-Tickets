@@ -1,0 +1,137 @@
+.container {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  position: relative;
+}
+.formContainer {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  padding: 30px 30px;
+  backdrop-filter: blur(3px);
+
+  box-shadow: 0 0 0 2px rgba(238, 238, 238, 0.2);
+}
+.formContainer h4 {
+  color: #1b262c;
+  font-family: "Inter", sans-serif;
+  color: #3282b8;
+  text-align: center;
+  font-size: 40px;
+  white-space: nowrap;
+  padding-bottom: 20px;
+  text-shadow: 1px -1px 4px #000000;
+}
+.smallerText {
+  font-size: 20px;
+  color: #eeeeee;
+}
+.fieldContainer {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.fieldContainer input:focus + label,
+.fieldContainer input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 20px;
+  font-size: 17px;
+  color: #3282b8;
+}
+
+.fieldContainer label {
+  position: absolute;
+  top: 40%;
+  left: 20px;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  color: #d2d2d2;
+  background-color: transparent;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  padding: 0 5px;
+  margin-left: -5px;
+  text-shadow: 1px -1px 3px #000000;
+}
+
+.fieldContainer input:focus {
+  outline: none;
+}
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signUpForm input {
+  font-size: 15px;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 5%;
+  padding: 0 30px 0 20px;
+  border-radius: 25px;
+  border: unset;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.signUpForm input,
+select,
+textarea {
+  font-size: 15px;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 5%;
+  padding: 0 30px 0 20px;
+  border-radius: 25px;
+  border: unset;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #eeeeee;
+  letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+}
+
+.signUpButton {
+  width: 350px;
+  height: 50px;
+  border-radius: 25px;
+  border: unset;
+  cursor: pointer;
+  background-color: #0f4c75;
+  transition: background-color 0.3s ease;
+  color: #eeeeee;
+  font-size: 25px;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 5px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.signUpButton:hover {
+  background-color: #3282b8;
+}
+.loginText {
+  font-weight: bold;
+  font-size: 18px;
+  color: #858585;
+  text-indent: 30px;
+}
+.loginNavigate {
+  background-color: transparent;
+  border: unset;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  color: #3282b8;
+  font-weight: bold;
+  font-size: 18px;
+}
+.loginNavigate:hover {
+  color: #0f4c75;
+}
