@@ -1,3 +1,6 @@
+* {
+  word-break: break-word;
+}
 .container {
   background-repeat: no-repeat;
   background-size: cover;
@@ -134,4 +137,14 @@ textarea {
 }
 .loginNavigate:hover {
   color: #0f4c75;
+}
+.error {
+  margin-top: -5%;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
+  color: crimson;
+  text-align: center;
+  height: fit-content;
+  width: 330px;
+  text-shadow: 1px -1px 4px #000000;
 }

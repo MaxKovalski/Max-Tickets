@@ -5,7 +5,13 @@ import morning from "../../../image/authImages/morning.jpg";
 import afternoon from "../../../image/authImages/afternoon.jpg";
 import evening from "../../../image/authImages/evening.jpg";
 import night from "../../../image/authImages/night.jpg";
-export default function SignUpForm({ handleSubmit }) {
+import React from "react";
+export default function SignUpForm({
+  handleSubmit,
+  error,
+  handleFieldValidation,
+  signUpCheck,
+}) {
   let navigate = useNavigate();
   const Sentences = [
     "Where Solutions Meet Efficiency.",
@@ -15,6 +21,10 @@ export default function SignUpForm({ handleSubmit }) {
     "Making Every Ticket Count.",
     "The Future of IT Support Starts Here.",
   ];
+  const [randomSentence] = React.useState(() => {
+    const randomNumber = Math.floor(Math.random() * Sentences.length);
+    return Sentences[randomNumber];
+  });
   let hours = new Date().getHours();
   let imageByHours;
   if (hours >= 0 && hours < 12) {
@@ -26,13 +36,12 @@ export default function SignUpForm({ handleSubmit }) {
   } else if (hours >= 21) {
     imageByHours = night;
   }
-  const getRandomSentence = () => {
-    const randomNumber = Math.floor(Math.random() * Sentences.length);
-    return Sentences[randomNumber];
-  };
+
   return (
     <div
       style={{
+        overflowWrap: "break-word",
+        whiteSpace: "pre-wrap",
         backgroundImage: `url(${imageByHours})`,
       }}
       className={styles.container}
@@ -43,21 +52,47 @@ export default function SignUpForm({ handleSubmit }) {
             <h4>
               Sign Up
               <br />
-              <span className={styles.smallerText}>{getRandomSentence()}</span>
+              <span className={styles.smallerText}>{randomSentence}</span>
             </h4>
 
             <form onSubmit={handleSubmit} className={styles.signUpForm}>
               <div className={styles.fieldContainer}>
-                <input placeholder=" " type="text" name="first" id="first" />
+                <input
+                  placeholder=" "
+                  type="text"
+                  name="first"
+                  id="first"
+                  onChange={handleFieldValidation}
+                />
                 <label htmlFor="first">Name</label>
+                {error.first && (
+                  <div className={styles.error}>{error.first}</div>
+                )}
               </div>
               <div className={styles.fieldContainer}>
-                <input placeholder=" " type="text" name="last" id="last" />
+                <input
+                  placeholder=" "
+                  type="text"
+                  name="last"
+                  id="last"
+                  onChange={handleFieldValidation}
+                />
                 <label htmlFor="last">Last Name</label>
+                {error.last && <div className={styles.error}>{error.last}</div>}
               </div>
               <div className={styles.fieldContainer}>
-                <input placeholder=" " type="text" name="email" id="email" />
+                <input
+                  placeholder=" "
+                  type="text"
+                  name="email"
+                  id="email"
+                  onChange={handleFieldValidation}
+                />
                 <label htmlFor="email">Email</label>
+
+                {error.email && (
+                  <div className={styles.error}>{error.email}</div>
+                )}
               </div>
               <div className={styles.fieldContainer}>
                 <input
@@ -65,8 +100,12 @@ export default function SignUpForm({ handleSubmit }) {
                   type="password"
                   name="password"
                   id="password"
+                  onChange={handleFieldValidation}
                 />
                 <label htmlFor="password">Password</label>
+                {error.password && (
+                  <div className={styles.error}>{error.password}</div>
+                )}
               </div>
 
               <button className={styles.signUpButton} type="submit">

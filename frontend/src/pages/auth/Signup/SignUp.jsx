@@ -1,6 +1,56 @@
+import React from "react";
 import SignUpForm from "./SignUpForm.jsx";
-
+import Joi from "joi";
+const schema = Joi.object({
+  first: Joi.string().min(2).required().messages({
+    "string.empty": "*First name is required",
+    "string.min": "*First name must be at least 2 characters",
+  }),
+  last: Joi.string().min(2).required().messages({
+    "string.empty": "*Last name is required",
+    "string.min": "*Last name must be at least 2 characters",
+  }),
+  email: Joi.string().email({ tlds: false }).required().messages({
+    "string.empty": "*Email Address is required",
+    "string.email": "*Email must be a valid email address",
+  }),
+  password: Joi.string()
+    .min(8)
+    .max(32)
+    .pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@%$#^&*\-_*]).{8,32}$/)
+    .required()
+    .messages({
+      "string.empty": "*Password is required",
+      "string.min": "*Password must be at least 8 characters long",
+      "string.max": "*Password must not exceed 32 characters",
+      "string.pattern.base":
+        "*Password must contain at least one uppercase letter and one special character",
+    }),
+});
 export default function SignUp() {
+  const [formData, setFormData] = React.useState({});
+  const [error, setError] = React.useState({});
+  const [signUpCheck, setSignUpCheck] = React.useState(false);
+  const handleFieldValidation = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    const object = { ...formData, [name]: value };
+    setFormData(object);
+    const fieldSchema = schema.extract(name);
+    const { error } = fieldSchema.validate(value);
+    if (error) {
+      setError((prevErrors) => ({
+        ...prevErrors,
+        [name]: error.details[0].message,
+      }));
+    } else {
+      setError((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -28,7 +78,12 @@ export default function SignUp() {
 
   return (
     <>
-      <SignUpForm handleSubmit={handleSubmit} />
+      <SignUpForm
+        handleSubmit={handleSubmit}
+        error={error}
+        handleFieldValidation={handleFieldValidation}
+        signUpCheck={signUpCheck}
+      />
     </>
   );
 }

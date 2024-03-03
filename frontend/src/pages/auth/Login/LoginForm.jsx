@@ -7,7 +7,12 @@ import styles from "../Css/Login.module.css";
 import { useNavigate } from "react-router-dom";
 import AnimatedPage from "../../../assets/AnimatedPage";
 
-export default function LoginForm({ handleSubmit }) {
+export default function LoginForm({
+  handleSubmit,
+  error,
+  handleFieldValidation,
+  checkUser,
+}) {
   let navigate = useNavigate();
   let hours = new Date().getHours();
   let messageParts;
@@ -52,18 +57,39 @@ export default function LoginForm({ handleSubmit }) {
           </h4>
           <form onSubmit={handleSubmit} className={styles.loginForm}>
             <div className={styles.fieldContainer}>
-              <input placeholder=" " type="text" name="email" id="email" />
+              <input
+                placeholder=" "
+                type="text"
+                name="email"
+                id="email"
+                onChange={handleFieldValidation}
+              />
+
               <label htmlFor="email">Email</label>
+              {error.email && <div className={styles.error}>{error.email}</div>}
             </div>
+
             <div className={styles.fieldContainer}>
               <input
                 placeholder=" "
                 type="password"
                 name="password"
                 id="password"
+                onChange={handleFieldValidation}
               />
               <label htmlFor="password">Password</label>
+              {error.password && (
+                <div className={styles.error}>{error.password}</div>
+              )}
             </div>
+
+            {!checkUser ? (
+              ""
+            ) : (
+              <div className={styles.error}>
+                Please check your email or password
+              </div>
+            )}
             <button className={styles.loginButton} type="submit">
               Login
             </button>
