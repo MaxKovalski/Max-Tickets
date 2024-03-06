@@ -22,3 +22,4 @@ const schema = new Schema({
 //     _id: { type: ObjectId, default: () => new mongoose.Types.ObjectId() },
 //   },
 export const User = mongoose.model("users", schema);
+// permission = none,client,tech,manager,admin

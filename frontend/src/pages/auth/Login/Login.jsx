@@ -1,6 +1,8 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import Joi from "joi";
+import { jwtDecode } from "jwt-decode";
+import { GeneralContext } from "../../../App";
 const schema = Joi.object({
   email: Joi.string().email({ tlds: false }).required().messages({
     "string.empty": "*Email Address is required",
@@ -17,6 +19,7 @@ export default function Login() {
   const [formData, setFormData] = React.useState({});
   const [error, setError] = React.useState({});
   const [checkUser, setCheckUser] = React.useState(false);
+  const { setUserData, setUserPermission } = React.useContext(GeneralContext);
   const handleFieldValidation = (event) => {
     const { name, value } = event.target;
     const object = { ...formData, [name]: value };
@@ -24,7 +27,7 @@ export default function Login() {
     const fieldSchema = schema.extract(name);
     const { error } = fieldSchema.validate(value);
     if (error) {
-      setError((prevErrors) => ({
+      return setError((prevErrors) => ({
         ...prevErrors,
         [name]: error.details[0].message,
       }));
@@ -37,8 +40,11 @@ export default function Login() {
     }
   };
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
+      return;
+    }
     try {
-      e.preventDefault();
       if (Object.keys(error).length === 0) {
         const formInputs = new FormData(e.target);
         const formProps = Object.fromEntries(formInputs);
@@ -50,17 +56,30 @@ export default function Login() {
         });
         const data = await response.json();
 
-        if (!response.ok) {
+        if (!response.ok || data.error) {
           setCheckUser(true);
-          console.error(checkUser);
-        } else if (data.error) {
-          setCheckUser(true);
-          console.error(checkUser);
         } else {
           setCheckUser(false);
-          console.error(checkUser);
         }
-        console.log(data);
+        if (typeof data.token === "string") {
+          localStorage.setItem("token", data.token);
+          const userAuth = jwtDecode(data.token);
+          localStorage.setItem("token", data.token);
+          setUserData(userAuth);
+          if (userAuth.permission === "client") {
+            setUserPermission(userAuth.permission);
+            console.log("client");
+          } else if (userAuth.permission === "tech") {
+            console.log("tech");
+            setUserPermission(userAuth.permission);
+          } else if (userAuth.permission === "manager") {
+            setUserPermission(userAuth.permission);
+            console.log("manager");
+          } else if (userAuth.permission === "admin") {
+            setUserPermission(userAuth.permission);
+            console.log("admin");
+          }
+        }
       }
     } catch (error) {
       console.log(error);
