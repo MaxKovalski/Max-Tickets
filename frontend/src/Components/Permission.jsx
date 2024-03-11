@@ -1,9 +1,9 @@
 export const userPermissions = {
-  none: "none",
-  client: "client",
-  tech: "tech",
-  manager: "manager",
-  admin: "admin",
+  none: 0,
+  client: 1,
+  tech: 2,
+  manager: 3,
+  admin: 4,
 };
 
 export const checkPermissions = (permissions, userPermissions) => {
@@ -29,9 +29,14 @@ export const pagesPerUser = [
     permissions: [userPermissions.client, userPermissions.admin],
   },
   {
-    route: "/it-support",
+    route: "/open-tickets",
     title: "Open-Tickets",
     permissions: [userPermissions.tech, userPermissions.admin],
+  },
+  {
+    route: "/manage-tickets",
+    title: "Manage-Tickets",
+    permissions: [userPermissions.manager, userPermissions.admin],
   },
   {
     route: "/manager-dashboard",
@@ -39,8 +44,8 @@ export const pagesPerUser = [
     permissions: [userPermissions.manager, userPermissions.admin],
   },
   {
-    route: "/admin-dashboard",
-    title: "Admin DashBoard",
+    route: "/admin-tools",
+    title: "Admin-Tools",
     permissions: [userPermissions.admin],
   },
 ];

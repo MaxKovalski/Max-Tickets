@@ -22,10 +22,21 @@ export default function NavBar() {
     margin: "0 10px",
   };
 
-  // Filter pages based on the current user's permissions
-  const allowedPages = pagesPerUser.filter((page) =>
-    checkPermissions(page.permissions, userPermission)
-  );
+  const allowedPages = pagesPerUser.filter((page) => {
+    if (userPermission > userPermissions.none) {
+      return (
+        checkPermissions(page.permissions, userPermission) &&
+        !["/login", "/signup"].includes(page.route)
+      );
+    } else {
+      return checkPermissions(page.permissions, userPermission);
+    }
+  });
+  const handleLogout = () => {
+    localStorage.clear("token");
+    setUserData(null);
+    setUserPermission(userPermissions.none);
+  };
 
   return (
     <nav style={navStyle}>
@@ -38,6 +49,22 @@ export default function NavBar() {
             </Link>
           </li>
         ))}
+        {userPermission > userPermissions.none && (
+          <li style={{ marginLeft: "auto" }}>
+            {/* Replace the Link with a button */}
+            <button
+              onClick={handleLogout}
+              style={{
+                ...navLinkStyle,
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   );

@@ -11,7 +11,7 @@ const schema = new Schema({
     unique: true,
   },
   password: String,
-  permission: { type: String, default: "client" },
+  permission: { type: Number, default: 0 },
   phone: String,
   createTime: { type: Date, default: Date.now() },
 });

@@ -64,18 +64,19 @@ export default function Login() {
         if (typeof data.token === "string") {
           localStorage.setItem("token", data.token);
           const userAuth = jwtDecode(data.token);
+          console.log(userAuth);
           localStorage.setItem("token", data.token);
           setUserData(userAuth);
-          if (userAuth.permission === "client") {
+          if (userAuth.permission === 1) {
             setUserPermission(userAuth.permission);
             console.log("client");
-          } else if (userAuth.permission === "tech") {
+          } else if (userAuth.permission === 2) {
             console.log("tech");
             setUserPermission(userAuth.permission);
-          } else if (userAuth.permission === "manager") {
+          } else if (userAuth.permission === 3) {
             setUserPermission(userAuth.permission);
             console.log("manager");
-          } else if (userAuth.permission === "admin") {
+          } else if (userAuth.permission === 4) {
             setUserPermission(userAuth.permission);
             console.log("admin");
           }
