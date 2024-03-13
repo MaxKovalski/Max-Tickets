@@ -34,4 +34,9 @@ const loginValidation = Joi.object({
     )
     .required(),
 });
-export { signUpValidation, loginValidation };
+const createTicketValidation = Joi.object({
+  title: Joi.string().min(3).max(64),
+  description: Joi.string().allow(""),
+  image: Joi.string().allow(""),
+});
+export { signUpValidation, loginValidation, createTicketValidation };

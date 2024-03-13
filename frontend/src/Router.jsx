@@ -1,10 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./pages/auth/Login/Login.jsx";
 import SignUp from "./pages/auth/Signup/SignUp.jsx";
 import Admin from "./pages/auth/Admin.jsx";
 import CreateTicket from "./pages/create_ticket/CreateTicket.jsx";
 import { userPermissions } from "./Components/Permission.jsx";
-import RouterGuard from "../Guard/RouterGuard.jsx";
+import RouterGuard from "./Guard/RouterGuard.jsx";
 import OpenTickets from "./pages/tech/OpenTickets.jsx";
 import ManageTickets from "./pages/manager/ManageTickets.jsx";
 import DashBoard from "./pages/manager/DashBoard.jsx";

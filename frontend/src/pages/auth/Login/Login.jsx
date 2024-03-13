@@ -2,7 +2,9 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import Joi from "joi";
 import { jwtDecode } from "jwt-decode";
+import { setToken, ActivityCheck } from "../../../assets/ManageLocalStorage";
 import { GeneralContext } from "../../../App";
+import { useNavigate } from "react-router-dom";
 const schema = Joi.object({
   email: Joi.string().email({ tlds: false }).required().messages({
     "string.empty": "*Email Address is required",
@@ -15,11 +17,19 @@ const schema = Joi.object({
     "string.pattern.base": "",
   }),
 });
+
 export default function Login() {
+  React.useEffect(() => {
+    const cleanUserActivity = ActivityCheck();
+    return () => {
+      cleanUserActivity();
+    };
+  }, []);
   const [formData, setFormData] = React.useState({});
   const [error, setError] = React.useState({});
   const [checkUser, setCheckUser] = React.useState(false);
   const { setUserData, setUserPermission } = React.useContext(GeneralContext);
+  let navigate = useNavigate();
   const handleFieldValidation = (event) => {
     const { name, value } = event.target;
     const object = { ...formData, [name]: value };
@@ -62,23 +72,22 @@ export default function Login() {
           setCheckUser(false);
         }
         if (typeof data.token === "string") {
-          localStorage.setItem("token", data.token);
           const userAuth = jwtDecode(data.token);
           console.log(userAuth);
-          localStorage.setItem("token", data.token);
+          setToken(data.token);
           setUserData(userAuth);
           if (userAuth.permission === 1) {
             setUserPermission(userAuth.permission);
-            console.log("client");
+            navigate("/create-ticket");
           } else if (userAuth.permission === 2) {
-            console.log("tech");
+            navigate("/open-tickets");
             setUserPermission(userAuth.permission);
           } else if (userAuth.permission === 3) {
             setUserPermission(userAuth.permission);
-            console.log("manager");
+            navigate("/manage-tickets");
           } else if (userAuth.permission === 4) {
             setUserPermission(userAuth.permission);
-            console.log("admin");
+            navigate("/admin-tools");
           }
         }
       }
