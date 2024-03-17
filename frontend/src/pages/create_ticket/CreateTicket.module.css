@@ -1,4 +1,5 @@
 .container {
+  background-image: url("../../image//ticketImages//ticketImage.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -8,28 +9,18 @@
   min-height: 100vh;
   align-items: center;
   position: relative;
+  background-color: red;
 }
 .formContainer {
   background: rgba(0, 0, 0, 0.5);
-
   border-radius: 16px;
   padding: 30px 30px;
   backdrop-filter: blur(3px);
   box-shadow: 0 0 0 2px rgba(238, 238, 238, 0.2);
 }
-.formContainer h4 {
-  color: #1b262c;
-  font-family: "Inter", sans-serif;
-  color: #3282b8;
-  text-align: center;
-  font-size: 40px;
-  white-space: nowrap;
-  padding-bottom: 20px;
-  text-shadow: 1px -1px 4px #000000;
-}
-.smallerText {
-  font-size: 20px;
-  color: #eeeeee;
+.fieldContainer {
+  margin-bottom: 20px;
+  position: relative;
 }
 .fieldContainer {
   position: relative;
@@ -60,16 +51,16 @@
   margin-left: -5px;
   text-shadow: 1px -1px 3px #000000;
 }
+
 .fieldContainer input:focus {
   outline: none;
 }
-.loginForm {
+.ticketForm {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-.loginForm input {
+.ticketForm input {
   font-size: 15px;
   width: 350px;
   height: 50px;
@@ -79,7 +70,7 @@
   border: unset;
   background-color: rgba(255, 255, 255, 0.2);
 }
-.loginForm input,
+.ticketForm input,
 select,
 textarea {
   font-size: 15px;
@@ -96,8 +87,7 @@ textarea {
   font-weight: bold;
   font-family: "Inter", sans-serif;
 }
-
-.loginButton {
+.ticketButton {
   width: 350px;
   height: 50px;
   border-radius: 25px;
@@ -112,35 +102,6 @@ textarea {
   margin-bottom: 20px;
 }
 
-.loginButton:hover {
+.ticketButton:hover {
   background-color: #3282b8;
-}
-.signUpText {
-  font-weight: bold;
-  font-size: 18px;
-  color: #858585;
-  text-indent: 30px;
-}
-.signUpNavigate {
-  background-color: transparent;
-  border: unset;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  color: #3282b8;
-  font-weight: bold;
-  font-size: 18px;
-}
-.signUpNavigate:hover {
-  color: #0f4c75;
-}
-
-.error {
-  margin-top: -5%;
-  font-family: "Inter", sans-serif;
-  font-weight: bold;
-  color: crimson;
-  text-align: center;
-  height: fit-content;
-  width: 330px;
-  text-shadow: 1px -1px 4px #000000;
 }

@@ -36,10 +36,10 @@ export default function LoginForm({
 
   return (
     <div
+      className={styles.container}
       style={{
         backgroundImage: `url(${imageByHours})`,
       }}
-      className={styles.container}
     >
       <AnimatedPage>
         <div className={styles.formContainer}>
@@ -107,4 +107,10 @@ export default function LoginForm({
       </AnimatedPage>
     </div>
   );
+}
+
+function test() {
+  const num = 10;
+  const input = 5;
+  const send = num + input;
 }

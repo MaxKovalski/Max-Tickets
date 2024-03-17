@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { GeneralContext } from "../App";
 import {
@@ -15,6 +16,7 @@ export default function NavBar() {
     padding: "10px",
     fontFamily: "Arial",
   };
+  let navigate = useNavigate();
 
   const navLinkStyle = {
     color: "white",
@@ -36,6 +38,7 @@ export default function NavBar() {
     localStorage.clear("token");
     setUserData(null);
     setUserPermission(userPermissions.none);
+    navigate("/Login");
   };
 
   return (
@@ -51,7 +54,6 @@ export default function NavBar() {
         ))}
         {userPermission > userPermissions.none && (
           <li style={{ marginLeft: "auto" }}>
-            {/* Replace the Link with a button */}
             <button
               onClick={handleLogout}
               style={{

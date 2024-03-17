@@ -1,7 +1,12 @@
 import React from "react";
+import CreateTicketForm from "./CreateTicketForm";
 
 const CreateTicket = () => {
-  return <div>CreateTicket</div>;
+  return (
+    <div>
+      <CreateTicketForm />
+    </div>
+  );
 };
 
 export default CreateTicket;

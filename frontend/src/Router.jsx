@@ -1,13 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/auth/Login/Login.jsx";
 import SignUp from "./pages/auth/Signup/SignUp.jsx";
-import Admin from "./pages/auth/Admin.jsx";
+import AdminTools from "./pages/admin/AdminTools.jsx";
 import CreateTicket from "./pages/create_ticket/CreateTicket.jsx";
 import { userPermissions } from "./Components/Permission.jsx";
 import RouterGuard from "./Guard/RouterGuard.jsx";
 import OpenTickets from "./pages/tech/OpenTickets.jsx";
 import ManageTickets from "./pages/manager/ManageTickets.jsx";
 import DashBoard from "./pages/manager/DashBoard.jsx";
+
 export default function Router() {
   return (
     <Routes>
@@ -23,6 +24,7 @@ export default function Router() {
           </RouterGuard>
         }
       />
+
       <Route
         path="/open-tickets"
         element={
@@ -57,7 +59,7 @@ export default function Router() {
         path="/admin-tools"
         element={
           <RouterGuard permission={[userPermissions.admin]}>
-            <Admin />
+            <AdminTools />
           </RouterGuard>
         }
       />

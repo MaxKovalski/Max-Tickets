@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import Joi from "joi";
 import { jwtDecode } from "jwt-decode";
-import { setToken, ActivityCheck } from "../../../assets/ManageLocalStorage";
+import { setToken } from "../../../assets/ManageLocalStorage";
 import { GeneralContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
 const schema = Joi.object({
@@ -19,12 +19,6 @@ const schema = Joi.object({
 });
 
 export default function Login() {
-  React.useEffect(() => {
-    const cleanUserActivity = ActivityCheck();
-    return () => {
-      cleanUserActivity();
-    };
-  }, []);
   const [formData, setFormData] = React.useState({});
   const [error, setError] = React.useState({});
   const [checkUser, setCheckUser] = React.useState(false);
