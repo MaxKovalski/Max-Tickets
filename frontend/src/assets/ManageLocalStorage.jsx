@@ -14,7 +14,7 @@ export function ResetTokenExpiration() {
       document.dispatchEvent(new CustomEvent("logout"));
       window.location.reload();
     }
-  }, 5000);
+  }, 1 * Hour);
 }
 export function ClearTokenExpiration() {
   if (tokenTimeout !== null) {

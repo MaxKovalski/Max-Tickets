@@ -2,6 +2,7 @@ import { Ticket } from "../models/ticket.js";
 import { User } from "../models/user.js";
 import { jwtVerify } from "../config/jwtConfig.js";
 import { createTicketValidation } from "../middleware/validationMiddleware.js";
+
 export const createTicket = async (req, res) => {
   try {
     const userId = jwtVerify(req, res).userId;
@@ -19,12 +20,17 @@ export const createTicket = async (req, res) => {
       return res.status(406).json({ error: error });
     }
     ticketDetails.user_id = userId;
+    if (req.file) {
+      ticketDetails.image = req.file.path;
+    }
+
     const ticket = new Ticket({
       name: {
         first: user.name.first,
         last: user.name.last,
       },
       email: user.email,
+      image: ticketDetails.image,
       ...ticketDetails,
     });
 

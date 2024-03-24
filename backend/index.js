@@ -5,6 +5,7 @@ import chalk from "chalk";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import moment from "moment";
+
 import { authRouter } from "./routers/authRouter.js";
 const env = dotenv.config();
 async function connectDB() {
