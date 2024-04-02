@@ -1,10 +1,12 @@
 import React from "react";
 import CreateTicketForm from "./CreateTicketForm";
-
-export default function CreateTicket() {
+import styles from "./CreateTicket.module.css";
+export default function CreateTicket({ onTicketAdded, useBackground = true }) {
   // const [ticketData, setTicketData] = React.useState({});
   const userToken = localStorage.getItem("token");
-
+  const containerStyle = useBackground
+    ? styles.backgroundImage
+    : styles.noBackground;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -17,12 +19,17 @@ export default function CreateTicket() {
 
         body: ticketInputs,
       });
+      if (response.ok) {
+        const newTicket = await response.json();
+        onTicketAdded(newTicket);
+        console.log(newTicket);
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
   return (
-    <div>
+    <div className={containerStyle}>
       <CreateTicketForm handleSubmit={handleSubmit} />
     </div>
   );

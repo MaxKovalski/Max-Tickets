@@ -1,8 +1,13 @@
-.container {
+.backgroundImage {
   background-image: url("../../image//ticketImages//ticketImage.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+.noBackground {
+  background-image: none;
+}
+.container {
   display: flex;
   justify-content: center;
   width: 100%;

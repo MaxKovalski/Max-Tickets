@@ -38,8 +38,58 @@ export const createTicket = async (req, res) => {
     res.status(201).json({
       message: "Ticket created successfully",
       ticket: savedTicket._id,
+      title: savedTicket.title,
     });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getAllOpenTickets = async (req, res) => {
+  try {
+    const openTickets = await Ticket.find({
+      status: "open",
+    });
+    res.status(200).json(openTickets);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+export const updateTicketTech = async (req, res) => {
+  try {
+    const { _id, techName } = req.body;
+    if (!_id || !techName) {
+      return res
+        .status(400)
+        .json({ message: "Missing _id or techName in request body" });
+    }
+
+    await Ticket.findByIdAndUpdate(_id, { techName });
+    res.status(200).json({ message: "Tech name updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const archiveTicket = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    if (!_id) {
+      return res.status(400).json({ message: "Missing _id in request body" });
+    }
+
+    const ticket = await Ticket.findById(_id);
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+    ticket.archive = !ticket.archive;
+    await ticket.save();
+    res.status(200).json({
+      message: `Ticket ${
+        ticket.archive ? "archived" : "unarchived"
+      } successfully`,
+    });
+  } catch (error) {
+    console.error("Error toggling archive status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

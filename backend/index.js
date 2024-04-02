@@ -7,6 +7,7 @@ import morgan from "morgan";
 import moment from "moment";
 
 import { authRouter } from "./routers/authRouter.js";
+import { ticketRouter } from "./routers/ticketRouter.js";
 const env = dotenv.config();
 async function connectDB() {
   try {
@@ -27,7 +28,7 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-    methods: "GET,PUT,POST,DELETE,OPTIONS",
+    methods: "GET,PUT,POST,DELETE,OPTIONS,PATCH",
     allowedHeaders: "Content-Type, Accept, Authorization",
   })
 );
@@ -36,6 +37,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(authRouter);
+app.use(ticketRouter);
 app.use("/", (req, res) => {
   res.send("Hello World!");
 });

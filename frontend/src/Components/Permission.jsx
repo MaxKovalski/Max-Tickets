@@ -39,8 +39,8 @@ export const pagesPerUser = [
     permissions: [userPermissions.manager, userPermissions.admin],
   },
   {
-    route: "/manager-dashboard",
-    title: "DashBoard",
+    route: "/archive",
+    title: "Archive",
     permissions: [userPermissions.manager, userPermissions.admin],
   },
   {

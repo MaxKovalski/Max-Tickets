@@ -17,8 +17,9 @@ const schema = new Schema({
   },
   priority: { type: String, default: "Low" },
   image: { type: String },
-  status: { type: String, default: "Open" },
+  status: { type: String, default: "open" },
   user_id: { type: ObjectId },
-  techName: { type: String, default: "Not Assigned" },
+  techName: { type: String, default: "not assigned" },
+  archive: { type: Boolean, default: false },
 });
 export const Ticket = mongoose.model("tickets", schema);

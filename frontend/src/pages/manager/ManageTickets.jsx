@@ -1,21 +1,39 @@
-import React, { useState } from "react";
-import { FiPlus, FiTrash } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { FiPlus } from "react-icons/fi";
+import { IoIosArchive, IoMdArchive } from "react-icons/io";
 import { motion } from "framer-motion";
-import { FaFire } from "react-icons/fa";
-
+import getTickets from "../../Components/getTickets";
+import getTechs from "../../Components/getTechs";
+import updateTicketTech from "../../Components/updateTicketTech";
+import CreateTicket from "../create_ticket/CreateTicket";
+import styles from "./manageTickets.module.css";
+import Archive from "./Archive";
 export default function ManageTickets() {
+  const [tickets, setTickets] = useState([]);
+  const [techs, setTechs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userToken = localStorage.getItem("token");
+  useEffect(() => {
+    (async () => {
+      await getTickets(userToken, setTickets, setIsLoading);
+      await getTechs(userToken, setTechs, setIsLoading);
+    })();
+  }, [userToken]);
+  if (isLoading) {
+    return <div>Loading tickets...</div>;
+  }
   return (
     <div className="h-screen w-full bg-neutral-900 text-neutral-50">
-      <Board />
+      <Board tickets={tickets} techs={techs} />
     </div>
   );
 }
 
-const Board = () => {
-  const [cards, setCards] = useState(DEFAULT_CARDS);
-
+const Board = ({ tickets, techs }) => {
+  const [cards, setCards] = useState([...tickets]);
+  <AddCard setCards={setCards} />;
   return (
-    <div className="flex h-full w-full gap-3 overflow-scroll p-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
       <Column
         title="New Tickets"
         column="New Tickets"
@@ -23,20 +41,17 @@ const Board = () => {
         cards={cards}
         setCards={setCards}
       />
-      <Column
-        title="In progress"
-        column="doing"
-        headingColor="text-blue-200"
-        cards={cards}
-        setCards={setCards}
-      />
-      <Column
-        title="Complete"
-        column="done"
-        headingColor="text-emerald-200"
-        cards={cards}
-        setCards={setCards}
-      />
+      {techs.map((tech) => (
+        <Column
+          key={tech.id}
+          title={`${tech.name.first} ${tech.name.last}`}
+          column={tech.name.first + " " + tech.name.last}
+          headingColor="text-violet-300"
+          cards={cards}
+          setCards={setCards}
+        />
+      ))}
+
       <BurnBarrel setCards={setCards} />
     </div>
   );
@@ -49,12 +64,16 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
     e.dataTransfer.setData("cardId", card.id);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = async (e) => {
     const cardId = e.dataTransfer.getData("cardId");
 
     setActive(false);
     clearHighlights();
-
+    try {
+      await updateTicketTech(cardId, column);
+    } catch (error) {
+      console.error(error);
+    }
     const indicators = getIndicators();
     const { element } = getNearestIndicator(e, indicators);
 
@@ -87,7 +106,6 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   const handleDragOver = (e) => {
     e.preventDefault();
     highlightIndicator(e);
-
     setActive(true);
   };
 
@@ -212,11 +230,10 @@ const BurnBarrel = ({ setCards }) => {
     setActive(false);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = async (e) => {
     const cardId = e.dataTransfer.getData("cardId");
-
-    setCards((pv) => pv.filter((c) => c.id !== cardId));
-
+    setCards((pv) => pv.filter((c) => c._id !== cardId));
+    await Archive(cardId);
     setActive(false);
   };
 
@@ -231,101 +248,53 @@ const BurnBarrel = ({ setCards }) => {
           : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
       }`}
     >
-      {active ? <FaFire className="animate-bounce" /> : <FiTrash />}
+      {active ? <IoMdArchive className="animate-bounce" /> : <IoIosArchive />}
     </div>
   );
 };
 
-const AddCard = ({ column, setCards }) => {
-  const [text, setText] = useState("");
+const AddCard = ({ setCards }) => {
   const [adding, setAdding] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!text.trim().length) return;
-
-    const newCard = {
-      column,
-      title: text.trim(),
-      id: Math.random().toString(),
+  const handleNewTicket = (response) => {
+    const newTicket = {
+      id: response._id,
+      title: response.title,
+      column: "New Tickets",
     };
-
-    setCards((pv) => [...pv, newCard]);
-
+    setCards((prevCards) => [...prevCards, newTicket]);
     setAdding(false);
+  };
+
+  const closeModal = (e) => {
+    if (e.target === e.currentTarget) {
+      setAdding(false);
+    }
   };
 
   return (
     <>
       {adding ? (
-        <motion.form layout onSubmit={handleSubmit}>
-          <textarea
-            onChange={(e) => setText(e.target.value)}
-            autoFocus
-            placeholder="Add new task..."
-            className="w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0"
-          />
-          <div className="mt-1.5 flex items-center justify-end gap-1.5">
-            <button
-              onClick={() => setAdding(false)}
-              className="px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50"
-            >
-              Close
-            </button>
-            <button
-              type="submit"
-              className="flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300"
-            >
-              <span>Add</span>
-              <FiPlus />
-            </button>
+        <div className={styles.modalBackdrop} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CreateTicket
+              onTicketAdded={handleNewTicket}
+              useBackground={false}
+            />
           </div>
-        </motion.form>
+        </div>
       ) : (
         <motion.button
-          layout
           onClick={() => setAdding(true)}
-          className="flex w-full items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 hover:text-neutral-50"
         >
-          <span>Add card</span>
+          <span>Add Ticket</span>
           <FiPlus />
         </motion.button>
       )}
     </>
   );
 };
-
-const DEFAULT_CARDS = [
-  // New Tickets
-  {
-    title: "Look into render bug in dashboard",
-    id: "1",
-    column: "New Tickets",
-  },
-  { title: "SOX compliance checklist", id: "2", column: "New Tickets" },
-  { title: "[SPIKE] Migrate to Azure", id: "3", column: "New Tickets" },
-  { title: "Document Notifications service", id: "4", column: "New Tickets" },
-  // TODO
-  {
-    title: "Research DB options for new microservice",
-    id: "5",
-    column: "todo",
-  },
-  { title: "Postmortem for outage", id: "6", column: "todo" },
-  { title: "Sync with product on Q3 roadmap", id: "7", column: "todo" },
-
-  // DOING
-  {
-    title: "Refactor context providers to use Zustand",
-    id: "8",
-    column: "doing",
-  },
-  { title: "Add logging to daily CRON", id: "9", column: "doing" },
-  // DONE
-  {
-    title: "Set up DD dashboards for Lambda listener",
-    id: "10",
-    column: "done",
-  },
-];

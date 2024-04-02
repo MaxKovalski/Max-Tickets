@@ -7,7 +7,7 @@ import { userPermissions } from "./Components/Permission.jsx";
 import RouterGuard from "./Guard/RouterGuard.jsx";
 import OpenTickets from "./pages/tech/OpenTickets.jsx";
 import ManageTickets from "./pages/manager/ManageTickets.jsx";
-import DashBoard from "./pages/manager/DashBoard.jsx";
+import ArchivePage from "./pages/manager/ArchivePage.jsx";
 
 export default function Router() {
   return (
@@ -46,12 +46,20 @@ export default function Router() {
         }
       />
       <Route
-        path="/manager-dashboard"
+        path="/tickets"
+        element={
+          <RouterGuard
+            permission={[userPermissions.manager, userPermissions.admin]}
+          ></RouterGuard>
+        }
+      />
+      <Route
+        path="/archive"
         element={
           <RouterGuard
             permission={[userPermissions.manager, userPermissions.admin]}
           >
-            <DashBoard />
+            <ArchivePage />
           </RouterGuard>
         }
       />
