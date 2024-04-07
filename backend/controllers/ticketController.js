@@ -93,3 +93,17 @@ export const archiveTicket = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+export const getSingleTicket = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const ticket = await Ticket.findById(_id);
+
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+    res.status(200).send(ticket);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

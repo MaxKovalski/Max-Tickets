@@ -22,7 +22,6 @@
 }
 .formContainer h4 {
   color: #1b262c;
-  font-family: "Inter", sans-serif;
   color: #3282b8;
   text-align: center;
   font-size: 40px;
@@ -57,7 +56,7 @@
   color: #d2d2d2;
   background-color: transparent;
   font-weight: bold;
-  font-family: "Inter", sans-serif;
+
   font-size: 20px;
   padding: 0 5px;
   margin-left: -5px;
@@ -98,7 +97,6 @@ textarea {
   letter-spacing: 1px;
   font-size: 20px;
   font-weight: bold;
-  font-family: "Inter", sans-serif;
 }
 
 .signUpButton {
@@ -111,7 +109,6 @@ textarea {
   transition: background-color 0.3s ease;
   color: #eeeeee;
   font-size: 25px;
-  font-family: "Inter", sans-serif;
   letter-spacing: 5px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -140,7 +137,6 @@ textarea {
 }
 .error {
   margin-top: -5%;
-  font-family: "Inter", sans-serif;
   font-weight: bold;
   color: crimson;
   text-align: center;

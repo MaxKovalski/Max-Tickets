@@ -4,11 +4,13 @@ import {
   archiveTicket,
   createTicket,
   getAllOpenTickets,
+  getSingleTicket,
   updateTicketTech,
 } from "../controllers/ticketController.js";
 import { authUser, managerOnly } from "../middleware/authMiddleware.js";
 import { getAllTechs } from "../controllers/userController.js";
 export const ticketRouter = express.Router();
+
 const storageEngine = multer.diskStorage({
   destination: "./ticketImages",
   filename: (req, file, cb) => {
@@ -27,3 +29,4 @@ ticketRouter.get("/tickets", managerOnly, getAllOpenTickets);
 ticketRouter.get("/techs", managerOnly, getAllTechs);
 ticketRouter.post("/update-tech", managerOnly, updateTicketTech);
 ticketRouter.patch("/archive-ticket", managerOnly, archiveTicket);
+ticketRouter.get("/tickets/:_id", managerOnly, getSingleTicket);

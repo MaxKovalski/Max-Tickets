@@ -8,7 +8,8 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
       },
     });
     const data = await response.json();
-    const columnTickets = data.map((ticket) => ({
+    const filteredData = data.filter((ticket) => !ticket.archive);
+    const columnTickets = filteredData.map((ticket) => ({
       ...ticket,
       column:
         ticket.techName === "not assigned" ? "New Tickets" : ticket.techName,

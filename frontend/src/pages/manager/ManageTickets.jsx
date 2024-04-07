@@ -8,6 +8,7 @@ import updateTicketTech from "../../Components/updateTicketTech";
 import CreateTicket from "../create_ticket/CreateTicket";
 import styles from "./manageTickets.module.css";
 import Archive from "./Archive";
+import TicketModal from "./TicketModal";
 export default function ManageTickets() {
   const [tickets, setTickets] = useState([]);
   const [techs, setTechs] = useState([]);
@@ -23,7 +24,9 @@ export default function ManageTickets() {
     return <div>Loading tickets...</div>;
   }
   return (
-    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
+    <div
+      className={`${styles.backgroundImage} h-screen w-full text-neutral-50`}
+    >
       <Board tickets={tickets} techs={techs} />
     </div>
   );
@@ -31,33 +34,56 @@ export default function ManageTickets() {
 
 const Board = ({ tickets, techs }) => {
   const [cards, setCards] = useState([...tickets]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
+  // Function to handle ticket click
+  const handleTicketClick = (ticket) => {
+    setSelectedTicket(ticket);
+    setIsModalOpen(true);
+  };
   <AddCard setCards={setCards} />;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
       <Column
         title="New Tickets"
         column="New Tickets"
-        headingColor="text-neutral-500"
+        headingColor={styles.lightBlue}
         cards={cards}
         setCards={setCards}
+        onCardClick={handleTicketClick}
       />
       {techs.map((tech) => (
         <Column
           key={tech.id}
           title={`${tech.name.first} ${tech.name.last}`}
           column={tech.name.first + " " + tech.name.last}
-          headingColor="text-violet-300"
+          headingColor={styles.lightBlue}
           cards={cards}
           setCards={setCards}
+          onCardClick={handleTicketClick}
         />
       ))}
+      {isModalOpen && (
+        <TicketModal
+          ticket={selectedTicket}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
 
       <BurnBarrel setCards={setCards} />
     </div>
   );
 };
 
-const Column = ({ title, headingColor, cards, column, setCards }) => {
+const Column = ({
+  title,
+  headingColor,
+  cards,
+  column,
+  setCards,
+  onCardClick,
+}) => {
   const [active, setActive] = useState(false);
 
   const handleDragStart = (e, card) => {
@@ -179,7 +205,12 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
         }`}
       >
         {filteredCards.map((c) => (
-          <Card key={c.id} {...c} handleDragStart={handleDragStart} />
+          <Card
+            key={c.id}
+            {...c}
+            handleDragStart={handleDragStart}
+            onCardClick={onCardClick}
+          />
         ))}
         <DropIndicator beforeId={null} column={column} />
 
@@ -191,7 +222,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   );
 };
 
-const Card = ({ title, id, column, handleDragStart }) => {
+const Card = ({ title, id, column, handleDragStart, onCardClick }) => {
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
@@ -200,6 +231,7 @@ const Card = ({ title, id, column, handleDragStart }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
+        onClick={() => onCardClick({ title, id, column })} // Use the card's details
         className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
       >
         <p className="text-sm text-neutral-100">{title}</p>
@@ -289,9 +321,9 @@ const AddCard = ({ setCards }) => {
       ) : (
         <motion.button
           onClick={() => setAdding(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 hover:text-neutral-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-s text-neutral-400 hover:text-neutral-50"
         >
-          <span>Add Ticket</span>
+          <span className={styles.lightBlue}>Add Ticket</span>
           <FiPlus />
         </motion.button>
       )}

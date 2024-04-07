@@ -22,3 +22,12 @@
   z-index: 1001;
   background-image: none !important;
 }
+.backgroundImage {
+  background-image: url("../../image//ticketImages//ticketImage.jpg");
+
+  background-size: cover;
+  background-position: center;
+}
+.lightBlue {
+  color: #bbe1fa;
+}
