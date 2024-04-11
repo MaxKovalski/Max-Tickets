@@ -31,3 +31,8 @@
 .lightBlue {
   color: #bbe1fa;
 }
+.dropZone {
+  height: 100%; /* Adjust to desired height */
+  width: 100%; /* Adjust to desired width */
+  background-color: rgba(255, 255, 255, 0.1); /* Example styling */
+}

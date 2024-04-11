@@ -19,7 +19,7 @@ export default function CreateTicket({ onTicketAdded, useBackground = true }) {
 
         body: ticketInputs,
       });
-      if (response.ok) {
+      if (!useBackground) {
         const newTicket = await response.json();
         onTicketAdded(newTicket);
         console.log(newTicket);

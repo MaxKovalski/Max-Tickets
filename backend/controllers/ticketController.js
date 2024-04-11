@@ -48,9 +48,19 @@ export const createTicket = async (req, res) => {
 export const getAllOpenTickets = async (req, res) => {
   try {
     const openTickets = await Ticket.find({
-      status: "open",
+      archive: false,
     });
     res.status(200).json(openTickets);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+export const getAllArchivedTickets = async (req, res) => {
+  try {
+    const archivedTicket = await Ticket.find({
+      archive: true,
+    });
+    res.status(200).json(archivedTicket);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -104,6 +114,35 @@ export const getSingleTicket = async (req, res) => {
     res.status(200).send(ticket);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const getTechTickets = async (req, res) => {
+  try {
+    const { techName } = req.params;
+    const techTickets = await Ticket.find({ techName: techName });
+
+    if (!techTickets) {
+      return res.status(404).json({ message: "Tech not found" });
+    }
+    res.status(200).send(techTickets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const updateTicketStatus = async (req, res) => {
+  try {
+    const { _id, status } = req.body;
+    if (!_id || !status) {
+      return res
+        .status(400)
+        .json({ message: "Missing _id or status in request body" });
+    }
+
+    await Ticket.findByIdAndUpdate(_id, { status });
+    res.status(200).json({ message: "Status updated successfully" });
+  } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -35,7 +35,7 @@ app.use(
 app.listen(process.env.PORT, () => {
   console.log(chalk.green(`Server is running on port ${process.env.PORT}`));
 });
-
+app.use("/ticketImages", express.static("ticketImages"));
 app.use(authRouter);
 app.use(ticketRouter);
 app.use("/", (req, res) => {

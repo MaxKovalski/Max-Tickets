@@ -10,11 +10,20 @@ export const authUser = (req, res, next) => {
   });
 };
 
-export const managerOnly = (req, res, next) => {
+export const mangerMiddleware = (req, res, next) => {
   if (!jwtVerify(req, res).permission === 3) {
     res
       .status(403)
       .json({ message: "Access Denied: Requires Business User Access" });
+  } else {
+    next();
+  }
+};
+export const techMiddleware = (req, res, next) => {
+  if (!jwtVerify(req, res).permission === 3) {
+    res
+      .status(403)
+      .json({ message: "Access Denied: Requires Tech User Access" });
   } else {
     next();
   }

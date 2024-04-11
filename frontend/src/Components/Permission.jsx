@@ -31,7 +31,7 @@ export const pagesPerUser = [
   {
     route: "/open-tickets",
     title: "Open-Tickets",
-    permissions: [userPermissions.tech, userPermissions.admin],
+    permissions: [userPermissions.tech],
   },
   {
     route: "/manage-tickets",

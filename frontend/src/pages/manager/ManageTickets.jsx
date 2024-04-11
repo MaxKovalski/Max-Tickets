@@ -7,8 +7,8 @@ import getTechs from "../../Components/getTechs";
 import updateTicketTech from "../../Components/updateTicketTech";
 import CreateTicket from "../create_ticket/CreateTicket";
 import styles from "./manageTickets.module.css";
-import Archive from "./Archive";
 import TicketModal from "./TicketModal";
+import ArchiveTicket from "../../Components/ArchiveTicket";
 export default function ManageTickets() {
   const [tickets, setTickets] = useState([]);
   const [techs, setTechs] = useState([]);
@@ -31,18 +31,19 @@ export default function ManageTickets() {
     </div>
   );
 }
-
-const Board = ({ tickets, techs }) => {
+const Board = ({ tickets, techs, getTickets }) => {
   const [cards, setCards] = useState([...tickets]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
-
-  // Function to handle ticket click
   const handleTicketClick = (ticket) => {
-    setSelectedTicket(ticket);
+    const fullTicket = tickets.find(
+      (ticketData) => ticketData.id === ticket.id
+    );
+
+    setSelectedTicket(fullTicket);
     setIsModalOpen(true);
   };
-  <AddCard setCards={setCards} />;
+  <AddCard setCards={setCards} getTickets={getTickets} />;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
       <Column
@@ -200,7 +201,7 @@ const Column = ({
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`h-full w-full transition-colors ${
+        className={`h-full w-full transition-colors  ${
           active ? "bg-neutral-800/50" : "bg-neutral-800/0"
         }`}
       >
@@ -208,6 +209,7 @@ const Column = ({
           <Card
             key={c.id}
             {...c}
+            status={c.status}
             handleDragStart={handleDragStart}
             onCardClick={onCardClick}
           />
@@ -215,14 +217,24 @@ const Column = ({
         <DropIndicator beforeId={null} column={column} />
 
         {column === "New Tickets" && (
-          <AddCard column={column} setCards={setCards} />
+          <AddCard
+            column={column}
+            key={filteredCards._id}
+            setCards={setCards}
+          />
         )}
       </div>
     </div>
   );
 };
 
-const Card = ({ title, id, column, handleDragStart, onCardClick }) => {
+const Card = ({ title, id, column, handleDragStart, onCardClick, status }) => {
+  const borderColor =
+    status === "In Progress"
+      ? "#FFD700"
+      : status === "Complete"
+      ? "#32CD32"
+      : "#3282B8";
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
@@ -232,7 +244,12 @@ const Card = ({ title, id, column, handleDragStart, onCardClick }) => {
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
         onClick={() => onCardClick({ title, id, column })} // Use the card's details
-        className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
+        className="cursor-grab rounded bg-neutral-800 p-3 active:cursor-grabbing"
+        style={{
+          borderColor: borderColor,
+          borderWidth: "1px",
+          borderStyle: "solid",
+        }}
       >
         <p className="text-sm text-neutral-100">{title}</p>
       </motion.div>
@@ -245,7 +262,7 @@ const DropIndicator = ({ beforeId, column }) => {
     <div
       data-before={beforeId || "-1"}
       data-column={column}
-      className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
+      className="my-0.5 h-0.5 w-full bg-blue-400 opacity-0"
     />
   );
 };
@@ -265,7 +282,7 @@ const BurnBarrel = ({ setCards }) => {
   const handleDragEnd = async (e) => {
     const cardId = e.dataTransfer.getData("cardId");
     setCards((pv) => pv.filter((c) => c._id !== cardId));
-    await Archive(cardId);
+    await ArchiveTicket(cardId);
     setActive(false);
   };
 
@@ -297,13 +314,11 @@ const AddCard = ({ setCards }) => {
     setCards((prevCards) => [...prevCards, newTicket]);
     setAdding(false);
   };
-
   const closeModal = (e) => {
     if (e.target === e.currentTarget) {
       setAdding(false);
     }
   };
-
   return (
     <>
       {adding ? (

@@ -1,9 +1,11 @@
-export default async function getTickets(userToken, setTickets, setIsLoading) {
+export default async function getArchivedTickets(
+  userToken,
+  setTickets,
+  setIsLoading
+) {
   setIsLoading(true);
-
-  console.log(userToken);
   try {
-    const response = await fetch("http://localhost:2323/tickets", {
+    const response = await fetch("http://localhost:2323/tickets/archived", {
       method: "GET",
       headers: {
         Authorization: userToken,
@@ -11,11 +13,10 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
     });
     const data = await response.json();
     console.log(data);
-    const filteredData = data.filter((ticket) => !ticket.archive);
+    const filteredData = data.filter((ticket) => ticket.archive === true);
     const columnTickets = filteredData.map((ticket) => ({
       ...ticket,
-      column:
-        ticket.techName === "not assigned" ? "New Tickets" : ticket.techName,
+      column: ticket.archive === true ? "Archived Tickets" : "",
       id: ticket._id,
       status: ticket.status,
     }));
@@ -24,6 +25,6 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
     console.log(data);
   } catch (error) {
     console.error(error);
-    setIsLoading(false);
+    setIsLoading(true);
   }
 }
