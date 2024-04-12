@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from "moment";
 const Schema = mongoose.Schema;
 const schema = new Schema({
   name: {
@@ -10,9 +11,9 @@ const schema = new Schema({
     unique: true,
   },
   password: String,
-  permission: { type: Number, default: 0 },
+  permission: { type: Number, default: 1 },
   phone: String,
-  createTime: { type: Date, default: Date.now() },
+  createTime: { type: String, default: () => moment().format("YYYY-MM-DD") },
 });
 
 //   image: {

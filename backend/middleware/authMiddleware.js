@@ -10,7 +10,7 @@ export const authUser = (req, res, next) => {
   });
 };
 
-export const mangerMiddleware = (req, res, next) => {
+export const managerMiddleware = (req, res, next) => {
   if (!jwtVerify(req, res).permission === 3) {
     res
       .status(403)
@@ -21,6 +21,15 @@ export const mangerMiddleware = (req, res, next) => {
 };
 export const techMiddleware = (req, res, next) => {
   if (!jwtVerify(req, res).permission === 3) {
+    res
+      .status(403)
+      .json({ message: "Access Denied: Requires Tech User Access" });
+  } else {
+    next();
+  }
+};
+export const adminMiddleware = (req, res, next) => {
+  if (!jwtVerify(req, res).permission === 4) {
     res
       .status(403)
       .json({ message: "Access Denied: Requires Tech User Access" });

@@ -8,6 +8,7 @@ import moment from "moment";
 
 import { authRouter } from "./routers/authRouter.js";
 import { ticketRouter } from "./routers/ticketRouter.js";
+import { userRouter } from "./routers/userRouter.js";
 const env = dotenv.config();
 async function connectDB() {
   try {
@@ -38,6 +39,8 @@ app.listen(process.env.PORT, () => {
 app.use("/ticketImages", express.static("ticketImages"));
 app.use(authRouter);
 app.use(ticketRouter);
+app.use(userRouter);
+
 app.use("/", (req, res) => {
   res.send("Hello World!");
 });
