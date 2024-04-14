@@ -1,5 +1,9 @@
 import express from "express";
-import { getAllTechs, getAllUsers } from "../controllers/userController.js";
+import {
+  getAllTechs,
+  getAllUsers,
+  deleteUser,
+} from "../controllers/userController.js";
 import {
   managerMiddleware,
   adminMiddleware,
@@ -7,3 +11,4 @@ import {
 export const userRouter = express.Router();
 userRouter.get("/techs", managerMiddleware, getAllTechs);
 userRouter.get("/users", adminMiddleware, getAllUsers);
+userRouter.delete("/delete-user", adminMiddleware, deleteUser);

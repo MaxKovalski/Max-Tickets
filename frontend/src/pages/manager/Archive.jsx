@@ -12,5 +12,4 @@ export default async function Archive(cardId) {
   } catch (error) {
     console.error("Failed to toggle archive status:", error);
   }
-  return <h1> Archive</h1>;
 }

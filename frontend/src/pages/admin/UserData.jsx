@@ -25,7 +25,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
-
 const theme = createTheme({
   typography: {
     fontFamily: ["Inter", "sans-serif"].join(","),
@@ -168,11 +167,11 @@ function EnhancedTableHead(props) {
               onClick={createSortHandler(headCell.id)}
               sx={{
                 "&.Mui-active": {
-                  color: "#BBE1FA", // Color when active (clicked for sorting)
+                  color: "#BBE1FA",
                 },
                 "&:hover": { color: "#3282B8" },
                 "& .MuiTableSortLabel-icon": {
-                  color: "#3282B8", // Ensures the icon color matches the text color
+                  color: "#3282B8",
                 },
               }}
             >
@@ -199,9 +198,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
+function EnhancedTableToolbar({ numSelected, onDelete }) {
   return (
     <Toolbar
       sx={{
@@ -240,17 +237,19 @@ function EnhancedTableToolbar(props) {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Edit&Delete">
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        ""
-      )}
+        <>
+          <Tooltip title="Edit">
+            <IconButton>
+              <EditIcon sx={{ color: "#BBE1FA" }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton onClick={onDelete}>
+              <DeleteIcon sx={{ color: "#E3745B" }} />
+            </IconButton>
+          </Tooltip>
+        </>
+      ) : null}
     </Toolbar>
   );
 }
@@ -259,7 +258,13 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ users }) {
+export default function EnhancedTable({ users, setUsers, deleteUser }) {
+  const handleDelete = async () => {
+    const remainingUsers = await deleteUser(selected);
+    setSelected([]);
+    setUsers(remainingUsers);
+  };
+
   const rows = users.map((user) =>
     createData(
       user._id,
@@ -297,9 +302,9 @@ export default function EnhancedTable({ users }) {
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = [id];
+      newSelected = selected.concat(id);
     } else {
-      newSelected = [];
+      newSelected = selected.filter((item) => item !== id);
     }
 
     setSelected(newSelected);
@@ -326,7 +331,7 @@ export default function EnhancedTable({ users }) {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [rows, order, orderBy, page, rowsPerPage]
   );
 
   return (
@@ -337,10 +342,13 @@ export default function EnhancedTable({ users }) {
             width: "100%",
             mb: 2,
             backgroundColor: "transparent",
-            borderBottom: "1px solid #BBE1FA", // Stylish light blue border
+            borderBottom: "1px solid #BBE1FA",
           }}
         >
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            onDelete={handleDelete}
+          />
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
@@ -356,8 +364,6 @@ export default function EnhancedTable({ users }) {
                 rowCount={rows.length}
               />
               <TableBody>
-                {console.log("Visible Rows:", visibleRows)}
-
                 {visibleRows.length > 0 ? (
                   visibleRows.map((row, index) => {
                     const isItemSelected = isSelected(row._id);
@@ -365,12 +371,12 @@ export default function EnhancedTable({ users }) {
 
                     return (
                       <TableRow
+                        key={row._id}
                         hover
                         onClick={(event) => handleClick(event, row._id)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row._id}
                         selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
