@@ -21,8 +21,7 @@ export default function CreateTicket({ onTicketAdded, useBackground = true }) {
       });
       if (!useBackground) {
         const newTicket = await response.json();
-        onTicketAdded(newTicket);
-        console.log(newTicket);
+        await onTicketAdded(newTicket);
       }
     } catch (error) {
       console.error("Error submitting form:", error);

@@ -10,6 +10,7 @@ import styles from "./manageTickets.module.css";
 import TicketModal from "./TicketModal";
 import ArchiveTicket from "../../Components/ArchiveTicket";
 import Loading from "../../Components/Loading";
+
 export default function ManageTickets() {
   const [tickets, setTickets] = useState([]);
   const [techs, setTechs] = useState([]);
@@ -328,14 +329,13 @@ const BurnBarrel = ({ setCards }) => {
 
 const AddCard = ({ setCards }) => {
   const [adding, setAdding] = useState(false);
-
-  const handleNewTicket = (response) => {
+  const handleNewTicket = async (response) => {
     const newTicket = {
-      id: response._id,
+      id: response.ticket,
       title: response.title,
       column: "New Tickets",
     };
-    setCards((prevCards) => [...prevCards, newTicket]);
+    await setCards((prevCards) => [...prevCards, newTicket]);
     setAdding(false);
   };
   const closeModal = (e) => {
