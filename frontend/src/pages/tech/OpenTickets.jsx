@@ -55,7 +55,7 @@ const Board = ({ tickets, setTickets }) => {
   const statuses = ["Open", "In Progress", "Complete"];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto pt-28 pb-28">
       {statuses.map((status) => (
         <Column
           key={status}

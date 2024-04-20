@@ -8,12 +8,14 @@ import RouterGuard from "./Guard/RouterGuard.jsx";
 import OpenTickets from "./pages/tech/OpenTickets.jsx";
 import ManageTickets from "./pages/manager/ManageTickets.jsx";
 import ArchiveTicket from "./pages/manager/ArchiveTicket.jsx";
+import SinglePageWebSite from "./pages/webSite/SinglePageWebSite.jsx";
 
 export default function Router() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/home" element={<SinglePageWebSite />} />
       <Route
         path="/create-ticket"
         element={

@@ -16,8 +16,8 @@ export default async function getTechTickets(setTickets, setIsLoading) {
       }
     );
     const data = await response.json();
-
-    const columnTickets = data.map((ticket) => ({
+    const activeTickets = data.filter((ticket) => !ticket.archive);
+    const columnTickets = activeTickets.map((ticket) => ({
       ...ticket,
       id: ticket._id,
       status: ticket.status,

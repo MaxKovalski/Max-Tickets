@@ -1,73 +1,68 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { GeneralContext } from "../App";
 import {
   userPermissions,
   pagesPerUser,
   checkPermissions,
 } from "../Components/Permission.jsx";
+import styles from "./Css/navbar.module.css";
+import logoImage from "../image/Logo/Logo.png";
+import { FaBars, FaTimes } from "react-icons/fa";
+
 export default function NavBar() {
   const { setUserData, setUserPermission, userPermission } =
-    React.useContext(GeneralContext);
-  const navStyle = {
-    backgroundColor: "#333",
-    color: "white",
-    padding: "10px",
-    fontFamily: "Arial",
-  };
+    useContext(GeneralContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   let navigate = useNavigate();
 
-  const navLinkStyle = {
-    color: "white",
-    textDecoration: "none",
-    margin: "0 10px",
-  };
+  const allowedPages = pagesPerUser.filter(
+    (page) =>
+      checkPermissions(page.permissions, userPermission) &&
+      (userPermission > userPermissions.none
+        ? !["/login", "/signup", "/home"].includes(page.route)
+        : true)
+  );
 
-  const allowedPages = pagesPerUser.filter((page) => {
-    if (userPermission > userPermissions.none) {
-      return (
-        checkPermissions(page.permissions, userPermission) &&
-        !["/login", "/signup"].includes(page.route)
-      );
-    } else {
-      return checkPermissions(page.permissions, userPermission);
-    }
-  });
   const handleLogout = () => {
-    localStorage.clear("token");
+    localStorage.clear();
     setUserData(null);
     setUserPermission(userPermissions.none);
-    navigate("/Login");
+    navigate("/login");
   };
 
   return (
-    <nav style={navStyle}>
-      <h1>Logo</h1>
-      <ul style={{ listStyleType: "none", display: "flex" }}>
+    <nav className={styles.navbar}>
+      <img src={logoImage} alt="Logo" className={styles.logo} />
+      <div
+        className={styles.hamburger}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        {isMenuOpen ? <FaTimes /> : <FaBars />}
+      </div>
+      <ul
+        className={`${styles.navMenu} ${isMenuOpen ? styles.menuActive : ""}`}
+      >
+        {" "}
         {allowedPages.map((page) => (
           <li key={page.route}>
-            <Link to={page.route} style={navLinkStyle}>
+            <Link
+              to={page.route}
+              className={styles.navLink}
+              onClick={() => setIsMenuOpen(false)}
+            >
               {page.title}
             </Link>
           </li>
         ))}
-        {userPermission > userPermissions.none && (
-          <li style={{ marginLeft: "auto" }}>
-            <button
-              onClick={handleLogout}
-              style={{
-                ...navLinkStyle,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Logout
-            </button>
-          </li>
-        )}
       </ul>
+      {userPermission > userPermissions.none && (
+        <li className={styles.navItem}>
+          <button onClick={handleLogout} className={styles.logoutButton}>
+            Logout
+          </button>
+        </li>
+      )}
     </nav>
   );
 }

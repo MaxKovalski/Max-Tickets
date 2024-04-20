@@ -10,10 +10,8 @@ export const checkPermissions = (permissions, userPermissions) => {
   return permissions.includes(userPermissions);
 };
 export const pagesPerUser = [
-  { route: "/login", title: "Login", permissions: [userPermissions.none] },
-  { route: "/signup", title: "Signup", permissions: [userPermissions.none] },
   {
-    route: "/",
+    route: "/home",
     title: "Home",
     permissions: [
       userPermissions.none,
@@ -23,6 +21,9 @@ export const pagesPerUser = [
       userPermissions.admin,
     ],
   },
+  { route: "/login", title: "Login", permissions: [userPermissions.none] },
+  { route: "/signup", title: "Signup", permissions: [userPermissions.none] },
+
   {
     route: "/create-ticket",
     title: "Create Ticket",

@@ -22,6 +22,22 @@
   padding: 30px 30px;
   backdrop-filter: blur(3px);
   box-shadow: 0 0 0 2px rgba(238, 238, 238, 0.2);
+  width: 510px;
+  height: 516px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.formContainer h1 {
+  text-align: center;
+  font-size: 35px;
+  color: #bbe1fa;
+}
+.formContainer h2 {
+  text-align: center;
+  font-size: 20px;
+  color: #bbe1fa;
 }
 .fieldContainer {
   margin-bottom: 20px;
@@ -172,4 +188,17 @@ textarea {
 
 .ticketButton:hover {
   background-color: #3282b8;
+}
+.flippedContainer {
+  width: 450px;
+  height: 465px;
+}
+.error {
+  margin-top: -5%;
+  font-weight: bold;
+  color: crimson;
+  text-align: center;
+  height: fit-content;
+  width: 330px;
+  text-shadow: 1px -1px 4px #000000;
 }

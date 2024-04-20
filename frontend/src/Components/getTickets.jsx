@@ -3,7 +3,7 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
 
   console.log(userToken);
   try {
-    const response = await fetch("http://localhost:2323/tickets", {
+    const response = await fetch("http://localhost:2323/tickets-open", {
       method: "GET",
       headers: {
         Authorization: userToken,

@@ -19,7 +19,6 @@ const signUpValidation = Joi.object({
     )
     .required(),
 });
-
 const loginValidation = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
@@ -34,9 +33,23 @@ const loginValidation = Joi.object({
     )
     .required(),
 });
+const editUserValidation = Joi.object({
+  name: Joi.object().keys({
+    first: Joi.string().min(2).max(50).required(),
+    last: Joi.string().min(2).max(50).required(),
+  }),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .message('"email" must be a valid email address'),
+});
 const createTicketValidation = Joi.object({
   title: Joi.string().min(3).max(64),
   description: Joi.string().allow(""),
   image: Joi.string().allow(""),
 });
-export { signUpValidation, loginValidation, createTicketValidation };
+export {
+  signUpValidation,
+  loginValidation,
+  createTicketValidation,
+  editUserValidation,
+};

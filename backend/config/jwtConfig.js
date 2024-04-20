@@ -2,7 +2,6 @@ import env from "dotenv";
 env.config();
 import jwt from "jsonwebtoken";
 export const secret = process.env.JWT_SECRET;
-
 export const jwtVerify = (req, res) => {
   if (!req.headers.authorization) {
     return null;

@@ -1,0 +1,327 @@
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+.backgroundVideoWrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding-top: 100px;
+}
+.hero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+.hero h1 {
+  font-size: calc(4vw + 20px);
+  color: #bbe1fa;
+}
+.hero p {
+  font-size: calc(1.5vw + 10px);
+  color: #3282b8;
+  font-weight: bold;
+}
+
+.ctaButton {
+  background-color: #bbe1fa;
+  color: #1b262c;
+  font-weight: bold;
+  font-size: 25px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 200px;
+  height: 70px;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+.ctaButton:hover {
+  background-color: #3282b8;
+  color: #bbe1fa;
+}
+.ctaButton:hover::after {
+  content: "Sign up to start using Max Tickets!";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  border-radius: 5px;
+  display: block;
+}
+
+.features {
+  text-align: center;
+  background-color: #1b262c;
+  padding: 40px;
+}
+
+.featureCards {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cards {
+  width: 380px;
+  height: 430px !important;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #bbe1fa;
+}
+.cards img {
+  height: 300px;
+}
+.features h2 {
+  font-size: calc(2vw + 20px);
+  color: #bbe1fa;
+  margin-bottom: 60px;
+  margin-top: 30px;
+}
+.features h3 {
+  font-size: 20px;
+  color: #1b262c;
+  font-weight: bold;
+}
+.features p {
+  font-size: 16px;
+  color: #1b262c;
+}
+
+.testimonials {
+  background-color: #bbe1fa;
+  text-align: center;
+  padding: 40px;
+  position: relative;
+}
+
+.testimonials h2 {
+  font-size: calc(2vw + 20px);
+  margin-bottom: 30px;
+  color: #1b262c;
+  margin-bottom: 60px;
+  margin-top: 30px;
+}
+
+.testimonialContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.testimonialCard {
+  min-width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1b262c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.testimonialCard:hover {
+  transform: scale(1.05);
+}
+
+.testimonialCard p {
+  font-size: 18px;
+  color: #bbe1fa;
+  margin: 0;
+}
+
+.testimonialCard cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 16px;
+  color: #fff;
+}
+
+.formContainer {
+  position: relative;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  background: #1b262c;
+  padding: 30px 30px;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 0 0 2px rgba(238, 238, 238, 0.2);
+}
+.formContainer h2 {
+  font-size: calc(2vw + 20px);
+  margin-bottom: 30px;
+  color: #bbe1fa;
+  margin-bottom: 60px;
+  margin-top: 80px;
+  text-align: center;
+}
+.fieldContainer {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.fieldContainer input:focus + label,
+.fieldContainer textarea:focus + label,
+.fieldContainer input:not(:placeholder-shown) + label,
+.fieldContainer input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 20px;
+  font-size: 17px;
+  color: #3282b8;
+}
+.fieldContainer input:focus,
+textarea:focus {
+  outline: none;
+}
+.fieldContainer label {
+  position: absolute;
+  top: 40%;
+  left: 20px;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  color: #bbe1fa;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 0 5px;
+  margin-left: -5px;
+  text-shadow: 1px -1px 3px #000000;
+}
+.fieldContainer input:focus {
+  outline: none;
+}
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contactForm input {
+  font-size: 15px;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 5%;
+  padding: 0 30px 0 20px;
+  border-radius: 25px;
+  border: unset;
+  background-color: transparent;
+}
+.contactForm input,
+select,
+textarea {
+  font-size: 15px;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 5%;
+  padding: 0 30px 0 20px;
+  border-radius: 25px;
+  border: 2px #3282b8 solid;
+  color: #eeeeee;
+  letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.description {
+  width: 450px;
+  height: 200px;
+  background-color: transparent;
+}
+.description label {
+  top: 50%;
+}
+.contactButton {
+  width: 350px;
+  height: 50px;
+  border-radius: 25px;
+  border: unset;
+  cursor: pointer;
+
+  background-color: #bbe1fa;
+  color: #1b262c;
+  transition: background-color 0.3s ease;
+
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.contactButton:hover {
+  background-color: #3282b8;
+  color: #bbe1fa;
+}
+.footerSection {
+  background-color: #1b262cdb;
+  color: #bbe1fa;
+  text-align: center;
+  padding: 20px;
+}
+.socialIcons {
+  font-size: 24px;
+}
+
+.socialIcons a {
+  color: #bbe1fa;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.socialIcons a:hover {
+  color: #3282b8;
+}
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: calc(6vw + 10px);
+  }
+  .hero p {
+    font-size: calc(2vw + 8px);
+  }
+}
+.errorForm {
+  margin-top: -40px;
+  font-weight: bold;
+  color: crimson;
+  text-align: center;
+  height: fit-content;
+  width: 330px;
+  text-shadow: 1px -1px 4px #000000;
+}
+.successMessage {
+  color: #3282b8;
+  font-size: 20px;
+  font-weight: bold;
+}

@@ -11,7 +11,10 @@ export const authUser = (req, res, next) => {
 };
 
 export const managerMiddleware = (req, res, next) => {
-  if (!jwtVerify(req, res).permission === 3) {
+  if (
+    !jwtVerify(req, res).permission === 3 &&
+    !jwtVerify(req, res).permission === 4
+  ) {
     res
       .status(403)
       .json({ message: "Access Denied: Requires Business User Access" });

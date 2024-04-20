@@ -5,21 +5,21 @@ import chalk from "chalk";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import moment from "moment";
-
 import { authRouter } from "./routers/authRouter.js";
 import { ticketRouter } from "./routers/ticketRouter.js";
 import { userRouter } from "./routers/userRouter.js";
-const env = dotenv.config();
+dotenv.config();
 async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    const url = process.env.MONGODB_URI;
+    mongoose.connect(url);
     console.log(chalk.green("Connected to MongoDB!"));
   } catch (error) {
-    console.log(chalk.red("Error connecting to MongoDB: ", error.message));
-    process.exit();
+    console.log(chalk.red(`Error connecting to MongoDB: ${error.message}`));
+    process.exit(1);
   }
 }
-connectDB().catch((err) => console.log(err));
+connectDB();
 const app = express();
 morgan.token("time", () => moment().format("YYYY-MM-DD HH:mm:ss"));
 const morganFormat = ":time :method :url :status :response-time ms";

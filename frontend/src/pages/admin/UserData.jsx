@@ -25,6 +25,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
+
 const theme = createTheme({
   typography: {
     fontFamily: ["Inter", "sans-serif"].join(","),
@@ -66,10 +67,11 @@ const theme = createTheme({
     },
   },
 });
+
 function getPermissionLabel(permission) {
   const permissionMap = {
     0: "None",
-    1: "User",
+    1: "Client",
     2: "Tech",
     3: "Manager",
     4: "Admin",
@@ -138,18 +140,10 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
   return (
     <TableHead>
       <TableRow>
@@ -198,12 +192,13 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar({ numSelected, onDelete }) {
+function EnhancedTableToolbar({ numSelected, onDelete, onEdit }) {
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
+
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -239,7 +234,11 @@ function EnhancedTableToolbar({ numSelected, onDelete }) {
       {numSelected > 0 ? (
         <>
           <Tooltip title="Edit">
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                onEdit();
+              }}
+            >
               <EditIcon sx={{ color: "#BBE1FA" }} />
             </IconButton>
           </Tooltip>
@@ -258,11 +257,19 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ users, setUsers, deleteUser }) {
+export default function EnhancedTable({
+  users,
+  setUsers,
+  deleteUser,
+  editUser,
+}) {
   const handleDelete = async () => {
     const remainingUsers = await deleteUser(selected);
     setSelected([]);
     setUsers(remainingUsers);
+  };
+  const handleEdit = async () => {
+    const remainingUsers = await editUser(selected);
   };
 
   const rows = users.map((user) =>
@@ -298,16 +305,11 @@ export default function EnhancedTable({ users, setUsers, deleteUser }) {
   };
 
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = selected.concat(id);
+    if (selected.indexOf(id) === -1) {
+      setSelected([id]);
     } else {
-      newSelected = selected.filter((item) => item !== id);
+      setSelected([]);
     }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -348,6 +350,7 @@ export default function EnhancedTable({ users, setUsers, deleteUser }) {
           <EnhancedTableToolbar
             numSelected={selected.length}
             onDelete={handleDelete}
+            onEdit={handleEdit}
           />
           <TableContainer>
             <Table
@@ -416,7 +419,7 @@ export default function EnhancedTable({ users, setUsers, deleteUser }) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 15, 25]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}

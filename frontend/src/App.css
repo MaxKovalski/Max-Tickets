@@ -1,5 +1,9 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+input::selection,
+textarea::selection {
+  color: white;
+  background-color: #0f4c75;
 }

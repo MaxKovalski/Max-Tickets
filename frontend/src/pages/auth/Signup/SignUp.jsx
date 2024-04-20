@@ -1,6 +1,7 @@
 import React from "react";
 import SignUpForm from "./SignUpForm.jsx";
 import Joi from "joi";
+import { useNavigate } from "react-router-dom";
 const schema = Joi.object({
   first: Joi.string().min(2).required().messages({
     "string.empty": "*First name is required",
@@ -30,7 +31,7 @@ const schema = Joi.object({
 export default function SignUp() {
   const [formData, setFormData] = React.useState({});
   const [error, setError] = React.useState({});
-  const [signUpCheck, setSignUpCheck] = React.useState(false);
+  let navigate = useNavigate();
   const handleFieldValidation = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -70,6 +71,19 @@ export default function SignUp() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (response.status === 409) {
+        return setError((prevErrors) => ({
+          ...prevErrors,
+          email: "Email already exists",
+        }));
+      } else if (response.ok) {
+        navigate("/login");
+      } else {
+        const error = await response.json();
+        console.error("Error submitting form:", error);
+        setError("An unexpected error occurred.");
+      }
+      navigate("/login");
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("An unexpected error occurred.");
@@ -82,7 +96,6 @@ export default function SignUp() {
         handleSubmit={handleSubmit}
         error={error}
         handleFieldValidation={handleFieldValidation}
-        signUpCheck={signUpCheck}
       />
     </>
   );

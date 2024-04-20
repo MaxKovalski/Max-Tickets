@@ -59,15 +59,14 @@ export default function Login() {
           body: JSON.stringify(formProps),
         });
         const data = await response.json();
-
         if (!response.ok || data.error) {
           setCheckUser(true);
         } else {
           setCheckUser(false);
         }
+
         if (typeof data.token === "string") {
           const userAuth = jwtDecode(data.token);
-          console.log(userAuth);
           setToken(data.token);
           setUserData(userAuth);
           if (userAuth.permission === 1) {

@@ -10,7 +10,6 @@ export default function SignUpForm({
   handleSubmit,
   error,
   handleFieldValidation,
-  signUpCheck,
 }) {
   let navigate = useNavigate();
   const Sentences = [

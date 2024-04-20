@@ -62,6 +62,7 @@
 .fieldContainer input:focus {
   outline: none;
 }
+
 .loginForm {
   display: flex;
   flex-direction: column;

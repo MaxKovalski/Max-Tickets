@@ -5,11 +5,13 @@ import styles from "./manageTickets.module.css";
 import TicketModal from "./TicketModal";
 import getArchivedTickets from "../../Components/getArchivedTickets";
 import ArchiveTicket from "../../Components/ArchiveTicket";
+
+import Loading from "../../Components/Loading";
 getArchivedTickets;
 export default function ManageTickets() {
   const [tickets, setTickets] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const userToken = localStorage.getItem("token");
   useEffect(() => {
     (async () => {
@@ -17,20 +19,41 @@ export default function ManageTickets() {
     })();
   }, [userToken]);
   if (isLoading) {
-    return <div>Loading tickets...</div>;
+    return <Loading />;
   }
   return (
     <div
       className={`${styles.backgroundImage} h-screen w-full text-neutral-50`}
     >
-      <Board tickets={tickets} />
+      <div className="flex justify-center items-center pt-20">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-1/3 p-2 rounded bg-neutral-800 text-neutral-50"
+        />
+      </div>
+      <Board
+        tickets={tickets.filter((ticket) =>
+          ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+      />
     </div>
   );
 }
-const Board = ({ tickets, getTickets }) => {
+const Board = ({ tickets }) => {
   const [cards, setCards] = useState([...tickets]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    setCards(
+      tickets.filter((ticket) =>
+        ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [tickets, searchTerm]);
   const handleTicketClick = (ticket) => {
     const fullTicket = tickets.find(
       (ticketData) => ticketData.id === ticket.id
@@ -41,7 +64,7 @@ const Board = ({ tickets, getTickets }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto pt-28">
       <Column
         title="Archived Tickets"
         column="Archived Tickets"
@@ -262,21 +285,24 @@ const BurnBarrel = ({ setCards }) => {
     const cardId = e.dataTransfer.getData("cardId");
     setCards((pv) => pv.filter((c) => c._id !== cardId));
     await ArchiveTicket(cardId);
+
     setActive(false);
   };
 
   return (
-    <div
-      onDrop={handleDragEnd}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
-        active
-          ? "border-red-800 bg-red-800/20 text-red-500"
-          : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
-      }`}
-    >
-      {active ? <IoMdArchive className="animate-bounce" /> : <IoIosArchive />}
-    </div>
+    <>
+      <div
+        onDrop={handleDragEnd}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
+          active
+            ? "border-red-800 bg-red-800/20 text-red-500"
+            : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
+        }`}
+      >
+        {active ? <IoMdArchive className="animate-bounce" /> : <IoIosArchive />}
+      </div>
+    </>
   );
 };

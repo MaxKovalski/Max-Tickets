@@ -108,9 +108,3 @@ export default function LoginForm({
     </div>
   );
 }
-
-function test() {
-  const num = 10;
-  const input = 5;
-  const send = num + input;
-}

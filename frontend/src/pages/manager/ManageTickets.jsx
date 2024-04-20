@@ -9,10 +9,12 @@ import CreateTicket from "../create_ticket/CreateTicket";
 import styles from "./manageTickets.module.css";
 import TicketModal from "./TicketModal";
 import ArchiveTicket from "../../Components/ArchiveTicket";
+import Loading from "../../Components/Loading";
 export default function ManageTickets() {
   const [tickets, setTickets] = useState([]);
   const [techs, setTechs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const userToken = localStorage.getItem("token");
   useEffect(() => {
     (async () => {
@@ -21,13 +23,27 @@ export default function ManageTickets() {
     })();
   }, [userToken]);
   if (isLoading) {
-    return <div>Loading tickets...</div>;
+    return <Loading />;
   }
   return (
     <div
       className={`${styles.backgroundImage} h-screen w-full text-neutral-50`}
     >
-      <Board tickets={tickets} techs={techs} />
+      <div className="flex justify-center items-center pt-20">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-1/3 p-2 rounded bg-neutral-800 text-neutral-50"
+        />
+      </div>
+      <Board
+        tickets={tickets.filter((ticket) =>
+          ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+        techs={techs}
+      />
     </div>
   );
 }
@@ -35,6 +51,14 @@ const Board = ({ tickets, techs, getTickets }) => {
   const [cards, setCards] = useState([...tickets]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    setCards(
+      tickets.filter((ticket) =>
+        ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [tickets, searchTerm]);
   const handleTicketClick = (ticket) => {
     const fullTicket = tickets.find(
       (ticketData) => ticketData.id === ticket.id
@@ -45,7 +69,7 @@ const Board = ({ tickets, techs, getTickets }) => {
   };
   <AddCard setCards={setCards} getTickets={getTickets} />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto pb-28">
       <Column
         title="New Tickets"
         column="New Tickets"
@@ -243,7 +267,7 @@ const Card = ({ title, id, column, handleDragStart, onCardClick, status }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        onClick={() => onCardClick({ title, id, column })} // Use the card's details
+        onClick={() => onCardClick({ title, id, column })}
         className="cursor-grab rounded bg-neutral-800 p-3 active:cursor-grabbing"
         style={{
           borderColor: borderColor,

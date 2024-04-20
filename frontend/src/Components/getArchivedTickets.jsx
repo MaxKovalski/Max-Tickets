@@ -24,6 +24,7 @@ export default async function getArchivedTickets(
     setIsLoading(false);
     console.log(data);
   } catch (error) {
+    localStorage.removeItem("token");
     console.error(error);
     setIsLoading(true);
   }

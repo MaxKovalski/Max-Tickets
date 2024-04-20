@@ -1,0 +1,23 @@
+.footerSection {
+  background-color: #1b262cdb;
+  color: #bbe1fa;
+  text-align: center;
+  z-index: 5;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+}
+.socialIcons {
+  font-size: 20px;
+}
+
+.socialIcons a {
+  color: #bbe1fa;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.socialIcons a:hover {
+  color: #3282b8;
+}

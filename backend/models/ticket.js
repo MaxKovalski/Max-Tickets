@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from "moment";
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 const schema = new Schema({
@@ -21,5 +22,6 @@ const schema = new Schema({
   user_id: { type: ObjectId },
   techName: { type: String, default: "not assigned" },
   archive: { type: Boolean, default: false },
+  createTime: { type: String, default: () => moment().format("YYYY-MM-DD") },
 });
 export const Ticket = mongoose.model("tickets", schema);

@@ -10,11 +10,14 @@ import {
   updateTicketTech,
   getTechTickets,
   updateTicketStatus,
+  deleteTicket,
+  getAllTickets,
 } from "../controllers/ticketController.js";
 import {
   authUser,
   managerMiddleware,
   techMiddleware,
+  adminMiddleware,
 } from "../middleware/authMiddleware.js";
 
 export const ticketRouter = express.Router();
@@ -36,10 +39,12 @@ ticketRouter.post(
   createTicket
 );
 
-ticketRouter.get("/tickets", managerMiddleware, getAllOpenTickets);
+ticketRouter.get("/tickets-open", managerMiddleware, getAllOpenTickets);
+ticketRouter.get("/tickets", managerMiddleware, getAllTickets);
 ticketRouter.get("/tickets/archived", managerMiddleware, getAllArchivedTickets);
 ticketRouter.get("/tickets/:_id", managerMiddleware, getSingleTicket);
 ticketRouter.get("/tickets/tech/:techName", techMiddleware, getTechTickets);
 ticketRouter.post("/update-tech", managerMiddleware, updateTicketTech);
 ticketRouter.patch("/archive-ticket", managerMiddleware, archiveTicket);
 ticketRouter.post("/update-status", techMiddleware, updateTicketStatus);
+ticketRouter.delete("/delete-ticket/:_id", adminMiddleware, deleteTicket);
