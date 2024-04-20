@@ -229,14 +229,13 @@ const Column = ({
 };
 
 const Card = ({ title, id, column, handleDragStart, onCardClick, status }) => {
-  console.log(status);
   const borderColor =
     status === "In Progress"
       ? "#FFD700"
       : status === "Complete"
       ? "#32CD32"
       : "#3282B8";
-  console.log(status);
+
   return (
     <>
       <DropIndicator beforeId={id} column={column} />

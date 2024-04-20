@@ -1,6 +1,5 @@
 export default async function ArchiveTicket(cardId) {
   try {
-    console.log(cardId);
     const response = await fetch("http://localhost:2323/archive-ticket", {
       method: "PATCH",
       headers: {

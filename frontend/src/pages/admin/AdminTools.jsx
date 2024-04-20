@@ -103,7 +103,6 @@ export default function ShowUsers() {
           throw new Error("Network response was not ok");
         }
         const dataTickets = await response.json();
-        console.log(dataTickets);
         setTickets(dataTickets);
       } catch (error) {
         console.error("Fetching error:", error);

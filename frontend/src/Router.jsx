@@ -9,6 +9,7 @@ import OpenTickets from "./pages/tech/OpenTickets.jsx";
 import ManageTickets from "./pages/manager/ManageTickets.jsx";
 import ArchiveTicket from "./pages/manager/ArchiveTicket.jsx";
 import SinglePageWebSite from "./pages/webSite/SinglePageWebSite.jsx";
+import About from "./pages/about/About.jsx";
 
 export default function Router() {
   return (
@@ -16,6 +17,7 @@ export default function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/home" element={<SinglePageWebSite />} />
+      <Route path="/about" element={<About />} />
       <Route
         path="/create-ticket"
         element={

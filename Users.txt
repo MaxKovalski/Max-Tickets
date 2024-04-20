@@ -1,0 +1,16 @@
+User Name: client@client.com
+Password: Cc$$1234
+Permission: client
+
+User Name: manager@manager.com
+Password: Mm$$1234
+Permission: manager
+
+User Name: admin@admin.com
+Password: Aa$$1234
+Permission: admin
+
+UserName: tech@tech.com
+Password: Tt$$1234
+Permission: tech
+*Same for tech1 and tech2

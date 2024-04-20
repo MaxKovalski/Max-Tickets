@@ -13,13 +13,12 @@ export const pagesPerUser = [
   {
     route: "/home",
     title: "Home",
-    permissions: [
-      userPermissions.none,
-      userPermissions.client,
-      userPermissions.tech,
-      userPermissions.manager,
-      userPermissions.admin,
-    ],
+    permissions: [userPermissions.none],
+  },
+  {
+    route: "/about",
+    title: "About",
+    permissions: [userPermissions.none],
   },
   { route: "/login", title: "Login", permissions: [userPermissions.none] },
   { route: "/signup", title: "Signup", permissions: [userPermissions.none] },

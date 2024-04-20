@@ -191,7 +191,6 @@ const Column = ({
   };
 
   const filteredTickets = tickets.filter((ticket) => ticket.status === title);
-  // const filteredCards = cards.filter((c) => c.column === column);
 
   return (
     <div className="w-56 shrink-0">
@@ -239,7 +238,7 @@ const Card = ({ title, id, column, handleDragStart, onCardClick, status }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        onClick={() => onCardClick({ title, id, column })} // Use the card's details
+        onClick={() => onCardClick({ title, id, column })}
         className="cursor-grab rounded bg-neutral-800 p-3 active:cursor-grabbing"
         style={{
           borderColor: borderColor,

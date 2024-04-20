@@ -1,7 +1,6 @@
 export default async function getTickets(userToken, setTickets, setIsLoading) {
   setIsLoading(true);
 
-  console.log(userToken);
   try {
     const response = await fetch("http://localhost:2323/tickets-open", {
       method: "GET",
@@ -10,7 +9,7 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
       },
     });
     const data = await response.json();
-    console.log(data);
+
     const filteredData = data.filter((ticket) => !ticket.archive);
     const columnTickets = filteredData.map((ticket) => ({
       ...ticket,
@@ -21,7 +20,6 @@ export default async function getTickets(userToken, setTickets, setIsLoading) {
     }));
     setTickets(columnTickets);
     setIsLoading(false);
-    console.log(data);
   } catch (error) {
     console.error(error);
     setIsLoading(false);

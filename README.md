@@ -8,6 +8,8 @@ Welcome to Max-Ticket, the ultimate solution for seamlessly organizing and manag
 
 MongoDB: in cloud i config for all Ip's make changes.
 
+The project has Users.txt its have all users with password for check all project
+
 To get started with this project, clone the repository and install dependencies:
 
 ```bash
@@ -32,7 +34,7 @@ Start the Vite
 npm run dev
 ```
 
-## Technologies
+## Technology Stack
 
 - **React**: The project is built using React, providing a modern and efficient user interface.
 - **Joi**: Utilizing Joi for data validation, ensuring the accuracy and integrity of your user information.
@@ -88,7 +90,7 @@ Can view all users and their tickets. The admin has the ability to change user n
 
 # Back-End
 
-## Technologies
+## Technology Stack
 
 - **MongoDB**: For storing data.
 - **Express.js**: Web server framework.

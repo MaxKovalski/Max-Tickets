@@ -13,7 +13,6 @@ export default function CreateTicketForm({ handleSubmit }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Joi schema
   const schema = Joi.object({
     title: Joi.string().required().messages({
       "string.empty": "Title is required.",

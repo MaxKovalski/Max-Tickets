@@ -12,7 +12,7 @@ export default async function getArchivedTickets(
       },
     });
     const data = await response.json();
-    console.log(data);
+
     const filteredData = data.filter((ticket) => ticket.archive === true);
     const columnTickets = filteredData.map((ticket) => ({
       ...ticket,
@@ -22,7 +22,6 @@ export default async function getArchivedTickets(
     }));
     setTickets(columnTickets);
     setIsLoading(false);
-    console.log(data);
   } catch (error) {
     localStorage.removeItem("token");
     console.error(error);

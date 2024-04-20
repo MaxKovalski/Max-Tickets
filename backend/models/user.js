@@ -15,11 +15,4 @@ const schema = new Schema({
   phone: String,
   createTime: { type: String, default: () => moment().format("YYYY-MM-DD") },
 });
-
-//   image: {
-//     url: { type: String },
-//     alt: { type: String },
-//     _id: { type: ObjectId, default: () => new mongoose.Types.ObjectId() },
-//   },
 export const User = mongoose.model("users", schema);
-// permission = none,client,tech,manager,admin
