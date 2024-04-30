@@ -20,7 +20,7 @@ export default function NavBar() {
     (page) =>
       checkPermissions(page.permissions, userPermission) &&
       (userPermission > userPermissions.none
-        ? !["/login", "/signup", "/home"].includes(page.route)
+        ? !["/login", "/signup", "/"].includes(page.route)
         : true)
   );
 

@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Css/userModal.module.css";
 import AnimatedPage from "../../assets/AnimatedPage";
-
 function UserModal({ isOpen, onClose, selectedUser, onSave }) {
   if (!isOpen) return null;
   const [userDetails, setUserDetails] = React.useState(selectedUser);
+
   const permissionMapping = {
     none: 0,
     client: 1,
@@ -12,7 +12,6 @@ function UserModal({ isOpen, onClose, selectedUser, onSave }) {
     manager: 3,
     admin: 4,
   };
-
   React.useEffect(() => {
     setUserDetails(selectedUser);
   }, [selectedUser]);

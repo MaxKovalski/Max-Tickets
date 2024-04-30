@@ -16,7 +16,7 @@ export default function Router() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/home" element={<SinglePageWebSite />} />
+      <Route path="/" element={<SinglePageWebSite />} />
       <Route path="/about" element={<About />} />
       <Route
         path="/create-ticket"

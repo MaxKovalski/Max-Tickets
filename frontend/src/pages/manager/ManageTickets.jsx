@@ -70,7 +70,7 @@ const Board = ({ tickets, techs, getTickets }) => {
   };
   <AddCard setCards={setCards} getTickets={getTickets} />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 p-12 overflow-auto pb-28">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 p-12 overflow-auto pb-28">
       <Column
         title="New Tickets"
         column="New Tickets"

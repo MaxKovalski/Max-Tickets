@@ -11,7 +11,7 @@ export const checkPermissions = (permissions, userPermissions) => {
 };
 export const pagesPerUser = [
   {
-    route: "/home",
+    route: "/",
     title: "Home",
     permissions: [userPermissions.none],
   },
